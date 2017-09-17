@@ -50,17 +50,21 @@ h1 {
 	margin-bottom: 0px;
 }
 
-p{
+p {
 	font-size: 20px;
 	text-align: left;
 	color: #f8f8ff;
 
 }
 
-h3{
+h3 {
 	text-align: left;
 	color: #f8f8ff;
 
+}
+
+.frontTitle {
+	text-shadow: 2px 2px #000000;
 }
 
 /*footer*/

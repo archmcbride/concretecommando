@@ -19,7 +19,7 @@ var myRouter = new VueRouter({
                              changed the name to the more inclusive, Conroy Contractors Inc. </p>
                               <p>Concrete construction work for residential and commercial.
 
-Services/Products:Foundations, walls, flat work, steps, sidewalks, pavement, decorative concrete, colored concrete, stamped concrete, patios/driveways</p>
+                              Services/Products:Foundations, walls, flat work, steps, sidewalks, pavement, decorative concrete, colored concrete, stamped concrete, patios/driveways</p>
                             </div>
                             <div class="col-sm-4"><img src="images/conroymen.jpg" class="img-responsive conroypic" alt="Responsive image"></div>
                           
@@ -73,7 +73,169 @@ Services/Products:Foundations, walls, flat work, steps, sidewalks, pavement, dec
                       </div><br />
                 </div>`
             }
-        }
+        },
+        {
+            path: '/clientlogin',
+            component: {
+                data:function(){
+                  return {
+                      newUserName : '', 
+                      newUserPassword : '', 
+                      oldUserName : '', 
+                      oldUserPassword : '', 
+                      user    : {}, 
+                      client : {},
+                      //progress: [],
+                      //displayedProgress: [],
+                  }
+                },
+                methods : {
+                    createUser : function(event){
+                        event.preventDefault()
+                        var that = this;
+                        // inside of a vue method, we can use `this` to access any data or method on that VM.
+                        // always send an object when using AJAX
+                        //console.log(this.newUserName)
+
+                        $.ajax({
+                            url: '/client',
+                            type: 'POST',
+                            data: JSON.stringify({username: this.newUserName, password: this.newUserPassword}),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: (dataFromServer) => {
+                                console.log(dataFromServer)//in Console in browser
+                                // if ( dataFromServer.success ) {
+                                //     window.location.href="/dash"
+
+                                // }
+                            }
+                        })
+                    },
+                    signInUser : function(event){
+                        event.preventDefault()
+                        var that = this;
+                        //console.log(this.oldUserName)
+
+                        $.ajax({
+                            url: '/signin-user',
+                            type: 'POST',
+                            data: JSON.stringify({username: this.oldUserName, password: this.oldUserPassword}),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: (dataFromServer) => {
+                                // console.log('main.js', dataFromServer.username)
+                                    mainVm.user = dataFromServer
+                                    myRouter.push('/dash')
+
+                                
+                            }
+                        })
+                    },
+
+                },
+                template:
+                `<div class="container">
+                      <div class="row">
+                          
+                          <div class="col-md-6">
+                             <div id="app">
+                                 <h3 class="frontTitle">Create Account</h3>
+                                 <form class="form" v-on:submit="createUser">
+                                     <input v-model="newUserName" placeholder="Name">
+                                     <input v-model="newUserPassword" placeholder="Password">
+                                     <input type="submit" value="Submit" class="btn btn-sm btnColor">
+                                 </form>
+                                 <h3 class="frontTitle">Login</h3>
+                                 <form class="form" v-on:submit="signInUser">
+                                     <input v-model="oldUserName" placeholder="Name">
+                                     <input v-model="oldUserPassword" placeholder="Password">
+                                     <input type="submit" value="Login" class="btn btn-sm btnColor">
+                                 </form> 
+                            </div>
+                          </div>   
+                      </div><br />
+                </div>`
+            }
+        },
+        {   //logged in dashboard
+            path: '/dash',
+            component: {
+                    data:function(){
+                      return {
+                          newUserName : '', 
+                          newUserPassword : '', 
+                          oldUserName : '', 
+                          oldUserPassword : '', 
+                          user    : mainVm.user, 
+                          client : {},
+                          projectname : '',
+                          cost: '',
+                          startdate: '',
+                          //progress: [],
+                          //displayedProgress: [],
+                      }
+                    },
+                    methods : {
+                        createProject : function(event){
+                            event.preventDefault()
+                            var that = this;
+                            // inside of a vue method, we can use `this` to access any data or method on that VM.
+                            // always send an object when using AJAX
+                            //console.log(this.newUserName)
+                            $.ajax({
+                                url: '/create-project',
+                                type: 'POST',
+                                data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate}),
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                success: (dataFromServer) => {
+                                    //console.log(dataFromServer)//in Console in browser
+                                }
+                            })
+                        },
+                        getProjects : function(event){
+                          event.preventDefault()
+                          var that = this;
+
+                          $.ajax ({
+                            url: '/all-projects',
+                            type: 'GET',
+                            data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate}),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: (dataFromServer) => {
+                                console.log(dataFromServer)//in Console in browser
+                            }   
+
+
+                          })
+
+                        },
+                    },
+                    template:
+                        `<div class="container">
+                            <div class="row project">
+                              <h3 class="frontTitle">Welcome, {{user.username}}</h3>
+                              <br>
+                              <br>
+                            </div>
+                            <div class="row project">  
+                              <h3 class="frontTitle">Create Project</h3>
+                                  <form class="form" v-on:submit="createProject"><br /><br /><br />
+                                      <div class="row project"> 
+                                          
+                                          <input v-model="projectname" placeholder=" Project Name">
+                                          <input v-model="cost" placeholder="Cost">
+                                          <input type="date" v-model="startdate" placeholder="Start Date">
+                                          <input type="submit" value="Create Project" class="btn btn-sm btnColor">
+                                      </div>
+                                  </form> 
+                               
+                            </div><br />
+                    </div>`
+                }
+            },
     ]
 })
 
@@ -84,5 +246,6 @@ var mainVm = new Vue({
     el: '#app',
     router: myRouter,
     data: {
+      user: ''
     }
 })
