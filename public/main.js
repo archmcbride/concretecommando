@@ -39,10 +39,10 @@ var myRouter = new VueRouter({
             component: {
                 template:
                 `<div class="container table stretch-v ">
-                  <div class="row stretch-v"> 
+                  <div class="row"> 
 
-                          <div class="col-md-12"><p>Contact me!</p></div>
-                          <div class="col-md-8"><p>Email: archmcbride@hotmail.com</p></div>
+                          <div class="col-md-12" id="contact"><p>Contact us:</p></div>
+                          <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Email: joe@concretecommando.com</p></div>
                    </div>  
                 </div>`
             }
@@ -190,6 +190,7 @@ var myRouter = new VueRouter({
                                 contentType: 'application/json; charset=utf-8',
                                 dataType: 'json',
                                 success: (dataFromServer) => {
+                                    console.log("Successfuly created a project")
                                     //console.log(dataFromServer)//in Console in browser
                                 }
                             })
@@ -199,13 +200,13 @@ var myRouter = new VueRouter({
                           var that = this;
 
                           $.ajax ({
-                            url: '/all-projects',
+                            url: '/me/projects',
                             type: 'GET',
                             data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate}),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
-                            success: (dataFromServer) => {
-                                console.log(dataFromServer)//in Console in browser
+                            success: function(dataFromServer) {
+                                console.log(dataFromServer.success) //in Console in browser
                             }   
 
 

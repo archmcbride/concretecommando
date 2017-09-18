@@ -16,7 +16,10 @@ body {
 	/*background-position: top;*/
 	/*overflow-x: hidden;*/
 }
-
+#logo{
+	width: 100px;
+	height: 100px;
+}
 #app {
 	height:auto;
 	width: 100vw;	
@@ -30,6 +33,9 @@ body {
   	height: 100%; 	
 }
 
+#contact {
+	text-shadow: 1px 1px #000000;
+}
 /*
 @media (min-height: 700px) {
 
@@ -86,8 +92,12 @@ h3 {
 	background-color: #2F4B26;
 	padding-bottom: 50px;
 }
+.text-black{
+	color: #000000;
+}
 
 .footer {
+	color: black;
 	position:absolute;
 	background-color: #C1D6BA;
 	width: 101%;

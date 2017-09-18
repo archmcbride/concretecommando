@@ -11,7 +11,7 @@
   // 6c. npm install request
   // 6d. npm install mongoose
 // 7. start nodemon to run server...  listening on port defined at bottom of server.js file (e.g. 8080)
-
+//8. SUDO MONGOD to start db
 // Make sure to set up script/link tags to CSS, JS, Bootstrap, etc
 
 var express = require('express')
@@ -117,52 +117,24 @@ app.post('/create-project', function(req, res, next){
 
 })
 
-// retrieve project info
-app.get('/all-projects', function(req, res, next){
-    console.log(req.body)
-    Project.find(function (err, project) {
-    if (err) {
-      return handleError(err);
-    }
-    console.log('this is your project: ', Project)
-    res.send(project)
+// app.get('/me', function(req, res){
+//     res.send(user)
+// })
+
+app.get('/me/projects', function(req, res, next){
+    project.find({_userid: req.body.userId}, function(err, data){
+        if (err) { next(err) 
+        } else {
+            res.send(data)
+            console.log(data)
+        }
     })
-
 })
-
-
-//similar to get('all-meals'
-// app.get('/client-progress', function(req, res, next){
-//     console.log(req.body)
-//     progress.find(function (err, progress) {
-//     if (err) {
-//       return handleError(err);
-//     }
-//     console.log('this is your progress: ', progress)
-//     res.send(progress)
-//     })
-
-// })
-
-// app.get('/client', function(req, res){
-//     res.send(client)
-// })
-
-// app.get('/client/progress', function(req, res, next){
-//     progress.find({_client: user._id}, function(err, data){
-//         if (err) { next(err) 
-//         } else {
-//             res.send(data)
-//             console.log(data)
-//         }
-//     })
-// })
-
 
 // (R)ead all items
 // app.get('/read-data', function(req, res, next){
 //     console.log(data)
-//     progress.find({}, function(err, data){
+//     Project.find({}, function(err, data){
 //         if (err) { next(err) }
 //         else {
 //             res.send(data)
@@ -170,6 +142,8 @@ app.get('/all-projects', function(req, res, next){
 //         // console.log(data)
 //     })
 // })
+
+
 // 500 error handler
 // because we use 4 parameters instead of 2 or 3, express sees this as error-handling middleware
 app.use(function(err, req, res, next){
@@ -180,7 +154,7 @@ app.use(function(err, req, res, next){
 
 
 
-module.exports = {client: Client}
+module.exports = {client: Client, Project: Project}
 
 
 app.listen(8080)
