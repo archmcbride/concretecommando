@@ -42,7 +42,7 @@ var myRouter = new VueRouter({
                   <div class="row"> 
 
                           <div class="col-md-12" id="contact"><p>Contact us:</p></div>
-                          <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Email: joe@concretecommando.com</p></div>
+                          <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Phone: 333-333-3333</p><p>Email: joe@concretecommando.com</p></div>
                    </div>  
                 </div>`
             }
@@ -169,12 +169,31 @@ var myRouter = new VueRouter({
                           oldUserPassword : '', 
                           user    : mainVm.user, 
                           client : {},
-                          projectname : '',
+                          projectname : mainVm.projectname,
                           cost: '',
                           startdate: '',
+                          projects: [],
                           //progress: [],
                           //displayedProgress: [],
                       }
+                    },
+                    created: function() {
+                        var that = this;
+
+                        $.ajax ({
+                          url: '/projects',
+                          type: 'GET',
+                          // contentType: 'application/json; charset=utf-8',
+                          // dataType: 'json',
+                          success: (dataFromServer) => {
+                              this.projects = dataFromServer
+                              console.log(dataFromServer, 'WOOOOOOOOOOOOW') //in Console in browser
+                          },
+                          error: function(err) {
+                              console.log(err, 'ERRRRRRR') //in Console in browser
+                          },
+
+                        })
                     },
                     methods : {
                         createProject : function(event){
@@ -191,28 +210,11 @@ var myRouter = new VueRouter({
                                 dataType: 'json',
                                 success: (dataFromServer) => {
                                     console.log("Successfuly created a project")
+                                    console.log(dataFromServer)
                                     //console.log(dataFromServer)//in Console in browser
                                 }
                             })
-                        },
-                        getProjects : function(event){
-                          event.preventDefault()
-                          var that = this;
-
-                          $.ajax ({
-                            url: '/me/projects',
-                            type: 'GET',
-                            data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate}),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            success: function(dataFromServer) {
-                                console.log(dataFromServer.success) //in Console in browser
-                            }   
-
-
-                          })
-
-                        },
+                        }
                     },
                     template:
                         `<div class="container">
@@ -232,7 +234,29 @@ var myRouter = new VueRouter({
                                           <input type="submit" value="Create Project" class="btn btn-sm btnColor">
                                       </div>
                                   </form> 
-                               
+                            </div>
+                            <div class="row project">      
+                                <h3 class="frontTitle">Overall Projects List</h3>
+                                <table class="table table-striped" id="tableClass">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th>Project Name</th>
+                                            <th>Cost</th>
+                                            <th>Start Date</th>
+                                            <th>Duration</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="frontTitle"> 
+                                        <tr v-for="project in projects">
+                                            <td>{{project.projectname}} </td>
+                                            <td>{{project.cost}}</td>
+                                            <td>{{new Date(project.startdate).toLocaleDateString()}}</td>
+                                            <td>{{project.duration}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </br>
+                                </br>
                             </div><br />
                     </div>`
                 }
@@ -247,6 +271,7 @@ var mainVm = new Vue({
     el: '#app',
     router: myRouter,
     data: {
-      user: ''
+      user: '',
+      projects: [],
     }
 })

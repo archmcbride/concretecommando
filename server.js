@@ -18,6 +18,7 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 var sessionsModule = require('client-sessions')
+var ObjectId = require('mongodb').ObjectId
 app.use(sessionsModule({
     cookieName: 'auth-cookie',  // front-end cookie name
     secret: 'DR@G0N$',        // the encryption password : keep this safe
@@ -110,7 +111,8 @@ app.post('/create-project', function(req, res, next){
     newProject.save(function(err){
         if (err){ next(err) }
         else {
-            res.send({success:'Successfully entered a project!'})
+            //res.send({success:'Successfully entered a project!'})
+            res.send(req.body)
         }
         //push the project onto the user id so projects are all linked together 
     })
@@ -121,13 +123,15 @@ app.post('/create-project', function(req, res, next){
 //     res.send(user)
 // })
 
-app.get('/me/projects', function(req, res, next){
-    project.find({_userid: req.body.userId}, function(err, data){
-        if (err) { next(err) 
-        } else {
+app.get('/projects', function(req, res, next){
+	// console.log(req.session._id, 'PASSPORT PLZ')
+    Project.find({userId: ObjectId(req.session._id)}, function(err, data){
+        if (err) { console.log(err) }
+
+        	// console.log('hi')
+        	// console.log(data, 'dataaaaaa')
             res.send(data)
-            console.log(data)
-        }
+
     })
 })
 
