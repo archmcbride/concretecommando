@@ -61,12 +61,12 @@ var myRouter = new VueRouter({
                   <br > 
                   <br > 
                   <br > 
-                   <div class="row"> 
-
+                   <div class="row">
+                           <div> Map <iframe width="600" height="450" frameborder="0" style="border:0"
+                                  src="https://www.google.com/maps/embed/v1/place?q=conroy%20constructors%2C%20topeka%2C%20ks&key=AIzaSyAoKmCj-ERm3nMlKWBV7cDF0IApdZ2BtMg" allowfullscreen></iframe></div>
                            <div class="col-md-12" id="contact"><p>Contact concretecommando:</p></div>
-                           <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Phone: 333-333-3333</p><p>Email: joe@concretecommando.com</p></div>
-                   </div> 
-                   
+                           <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Phone: 333-333-3333</p><p>Email: joe@concretecommando.com</p></div> 
+                   </div>            
                 </div>`
             }
         },
@@ -307,8 +307,9 @@ var myRouter = new VueRouter({
                 // when we finally have the component, we RESOLVE it. if we fail to retrieve the component, we REJECT.
                 component: {
                     template:
-                    `<div> 
-                       
+                    `<div> <h3>Fellowship Bible Church, Topeka, KS</h3>
+                       <iframe width="600" height="450" frameborder="0" style="border:0"
+                       src="https://www.google.com/maps/embed/v1/place?q=fellowship%20bible%20church%2C%20Topeka%2C%20KS&key=AIzaSyD401hi0xA9Uo48aE7BsSrbTH9LQcrylog" allowfullscreen></iframe>
                     </div>`
                 }
             },
