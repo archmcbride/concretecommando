@@ -66,6 +66,7 @@ var projectSchema = new mongoose.Schema ({
 	projectname: {type: String},
 	cost: {type : Number},
 	startdate: {type: Date},
+	duration: {type: Number},
 })
 
 var Project = mongoose.model ('Project', projectSchema);
@@ -136,16 +137,16 @@ app.get('/projects', function(req, res, next){
 })
 
 // (R)ead all items
-// app.get('/read-data', function(req, res, next){
-//     console.log(data)
-//     Project.find({}, function(err, data){
-//         if (err) { next(err) }
-//         else {
-//             res.send(data)
-//         }
-//         // console.log(data)
-//     })
-// })
+app.get('/read-data', function(req, res, next){
+    console.log(data)
+    Project.find({}, function(err, data){
+        if (err) { next(err) }
+        else {
+            res.send(data)
+        }
+        // console.log(data)
+    })
+})
 
 
 // 500 error handler

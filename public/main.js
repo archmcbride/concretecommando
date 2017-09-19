@@ -39,11 +39,34 @@ var myRouter = new VueRouter({
             component: {
                 template:
                 `<div class="container table stretch-v ">
+                 
                   <div class="row"> 
+                        <form > <h3 class="frontTitle requestForm">Request for a Quote</h3>
+                          <p class="frontTitle">
+                           First name: <input type = "text" name = "first_name" />
+                              <br>
+                           Last name: <input type = "text" name = "last_name" />
+                              <br>
+                            Phone   : <input type = "number" name = "Phone Number" />
+                              <br>
+                            Email   : <input type = "text" name = "Email address" />
+                              <br>
+                            Description of Project: <br />
+                               <textarea rows = "5" cols = "50" name = "description">Enter description of your project here
+                               </textarea>
+                          </p>     
+                        </form>
+                          
+                  </div> 
+                  <br > 
+                  <br > 
+                  <br > 
+                   <div class="row"> 
 
-                          <div class="col-md-12" id="contact"><p>Contact us:</p></div>
-                          <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Phone: 333-333-3333</p><p>Email: joe@concretecommando.com</p></div>
-                   </div>  
+                           <div class="col-md-12" id="contact"><p>Contact concretecommando:</p></div>
+                           <div class="col-md-8" id="contact"><p>Joe Conroy</p><p>Phone: 333-333-3333</p><p>Email: joe@concretecommando.com</p></div>
+                   </div> 
+                   
                 </div>`
             }
         },
@@ -63,13 +86,22 @@ var myRouter = new VueRouter({
 
                       <div class="row project">
                           <div class="col-md-4"><img src="images/midwestHealthAquaticsCtr.jpg" class="img-responsive minion" alt="Responsive image"></div>
-                          <div class="col-md-8"><p>Midwest Health Aquatics Center, Topeka, KS</p></div>
+                          <div class="col-md-8"><p>Midwest Health Aquatics Center, Topeka, KS</p><
+                            <p>Midwest Health Aquatic Center features a 35-foot tower with five water slides three twisting, intertwining mat/speed slides, 
+                            and a second speed slide and an open slide that drop patrons directly into the pool. The main activity pool also features a zip line, 
+                            climbing wall and diving board.
+
+                            The bow tie wave pool is the only one of its kind in the Midwest and produces four different types of waves gentle, rolling, rocking 
+                            and diamond. It is good for walking, tubing or swimming.</p></div>
                           
                       </div><br />
 
                       <div class="row project">
                           <div class="col-md-4"><img src="images/church.jpg" class="img-responsive minion" alt="Responsive image"></div>
-                          <div class="col-md-8"><p>Fellowship Bible Church, Topeka, KS</p></div>
+                          <div class="col-md-8"><p>Fellowship Bible Church, Topeka, KS</p>
+                              <p> 
+                              </p>
+                          </div>
                       </div><br />
                 </div>`
             }
@@ -172,6 +204,7 @@ var myRouter = new VueRouter({
                           projectname : mainVm.projectname,
                           cost: '',
                           startdate: '',
+                          duration: '',
                           projects: [],
                           //progress: [],
                           //displayedProgress: [],
@@ -205,10 +238,16 @@ var myRouter = new VueRouter({
                             $.ajax({
                                 url: '/create-project',
                                 type: 'POST',
-                                data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate}),
+                                data: JSON.stringify({projectname: this.projectname, cost: this.cost, startdate: this.startdate, duration: this.duration, contractcomplete: this.contractcomplete}),
                                 contentType: 'application/json; charset=utf-8',
                                 dataType: 'json',
                                 success: (dataFromServer) => {
+                                    this.projectname="";
+                                    this.cost="";
+                                    this.startdate="";
+                                    this.duration="";
+                                    this.contractcomplete=""
+                                    this.projects.push(dataFromServer)
                                     console.log("Successfuly created a project")
                                     console.log(dataFromServer)
                                     //console.log(dataFromServer)//in Console in browser
@@ -231,6 +270,7 @@ var myRouter = new VueRouter({
                                           <input v-model="projectname" placeholder=" Project Name">
                                           <input v-model="cost" placeholder="Cost">
                                           <input type="date" v-model="startdate" placeholder="Start Date">
+                                          <input v-model="duration" placeholder="Duration in months">
                                           <input type="submit" value="Create Project" class="btn btn-sm btnColor">
                                       </div>
                                   </form> 
@@ -243,13 +283,13 @@ var myRouter = new VueRouter({
                                             <th>Project Name</th>
                                             <th>Cost</th>
                                             <th>Start Date</th>
-                                            <th>Duration</th>
+                                            <th>Duration (months)</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="frontTitle"> 
+                                    <tbody class="projects-table"> 
                                         <tr v-for="project in projects">
                                             <td>{{project.projectname}} </td>
-                                            <td>{{project.cost}}</td>
+                                            <td>$ {{project.cost}}</td>
                                             <td>{{new Date(project.startdate).toLocaleDateString()}}</td>
                                             <td>{{project.duration}}</td>
                                         </tr>
@@ -258,6 +298,17 @@ var myRouter = new VueRouter({
                                 </br>
                                 </br>
                             </div><br />
+                    </div>`
+                }
+            },
+            {
+                path: '/maps',
+                // because we don't have the component initially, we write a function that defines how to get it, using AJAX
+                // when we finally have the component, we RESOLVE it. if we fail to retrieve the component, we REJECT.
+                component: {
+                    template:
+                    `<div> 
+                       
                     </div>`
                 }
             },

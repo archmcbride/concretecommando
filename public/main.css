@@ -70,11 +70,17 @@ h3 {
 	color: #f8f8ff;
 
 }
+.projects-table {
+	color: #f8f8ff;
+}
 
 .frontTitle {
 	text-shadow: 2px 2px #000000;
 }
-
+.requestForm {
+	border-color: black;
+	
+}
 /*footer*/
 .navbar-text > a {
 	color: #f8f8ff;
